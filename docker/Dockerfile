@@ -25,6 +25,13 @@ RUN echo '[multilib]' >> /etc/pacman.conf && \
 USER aur
 RUN gpg --recv-keys 13FCEF89DD9E3C4F
 RUN gpg --recv-keys A328C3A2C3C45C06
-RUN yay -S arm-linux-gnueabi-gcc --noconfirm
-
+RUN yay -S cmake wget --noconfirm
+RUN cd /home/aur && wget https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.2.1-2017.11-i686_arm-linux-gnueabihf.tar.xz
+RUN cd /home/aur && tar xf gcc-linaro-7.2.1-2017.11-i686_arm-linux-gnueabihf.tar.xz
+USER root
+RUN mv /home/aur/gcc-linaro-7.2.1-2017.11-i686_arm-linux-gnueabihf /opt/arm-linux-gnueabihf-7.2.1
+USER aur
+RUN rm /home/aur/gcc-linaro-7.2.1-2017.11-i686_arm-linux-gnueabihf.tar.xz
+RUN yay -S core/lib32-glibc --noconfirm
+RUN /opt/arm-linux-gnueabihf-7.2.1/bin/arm-linux-gnueabihf-gcc --version
 CMD ["/bin/bash"]
